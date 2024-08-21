@@ -1,0 +1,97 @@
+target-version = "py312"
+
+# Same as Black.
+line-length = 88
+indent-width = 4
+
+src = ["src"]
+exclude = [
+    "**/.venv",
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "docs",
+    "shared",
+    "log",
+]
+
+[lint]
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
+select = ["ALL"]
+ignore = [
+  "D100",   # Missing docstring in public module
+  "D101",   # Missing docstring in public class
+  "D102",   # Missing docstring in public method
+  "D103",   # Missing docstring in public function
+  "D104",   # Missing docstring in public package
+  "D105",   # Missing docstring in magic method
+  "D106",   # Missing docstring in public nested class
+  "D107",   # Missing docstring in __init__
+  "D200",   # One-line docstring should fit on one line with quotes
+  "D203",   # Incompatible with D211
+  "D205",   # 1 blank line required between summary line and description
+  "D213",   # Incompatible with D212
+  "D400",   # First line should end with a period
+  "D401",   # First line should be in imperative mood
+  "D403",   # First word of the first line should be properly capitalized
+  "D406",   # Section name should end with a newline
+  "D407",   # Missing dashed underline after section
+  "D410",   # Missing blank line after section
+  "D411",   # Missing blank line before section
+  "D415",   # First line should end with a period, question mark, or exclamation point
+  "E111", "E114", "E117", "E402", "E501",
+  "ANN401",
+  "COM812", "COM819",
+  "ISC001", "ISC002",
+  "Q000", "Q001", "Q002", "Q003",
+  "RUF001", "RUF002", "RUF003", "RUF012",
+  "W191",
+  "BLE001", "ERA001", "S101", "T201", # for debugging
+  "ARG002", # Unused method argument
+  "SLF001", # Private member accessed
+  "S314",   # Using `xml` to parse untrusted data is known to be vulnerable to XML attacks; use `defusedxml` equivalents
+  "PLR0913",  # Too many arguments in function definition (13 > 5)
+  "FBT001", "FBT002",  # Boolean-typed positional argument in function definition
+]
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
