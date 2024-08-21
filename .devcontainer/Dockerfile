@@ -10,13 +10,13 @@ RUN apt-get update && \
 COPY --from=ghcr.io/astral-sh/uv:0.3.0 /uv /bin/uv
 COPY --from=ghcr.io/astral-sh/uv:0.3.0 /uvx /bin/uvx
 
-COPY . /app
-WORKDIR /app
+COPY . /opt
+WORKDIR /opt
 
 RUN uv sync
 
-ENV VIRTUAL_ENV=/app/.venv
+ENV VIRTUAL_ENV=/opt/.venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 ENV PYTHONUNBUFFERED=True
-
-RUN chown -R vscode $VIRTUAL_ENV
+RUN chown -R vscode $VIRTUAL_ENV && \
+    git config --system --add safe.directory /workspaces/ragmvp
