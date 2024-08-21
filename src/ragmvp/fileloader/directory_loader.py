@@ -3,8 +3,8 @@ from pathlib import Path
 from langchain_core.documents import Document as LCDocument
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-from fileloader.file import SimpleDirectoryReader
-from fileloader.utils import save_docs_to_jsonl
+from ragmvp.fileloader.file import SimpleDirectoryReader
+from ragmvp.fileloader.utils import save_docs_to_jsonl
 
 
 def load_data_from_directory(data_dir: Path, limit: int) -> list[LCDocument]:

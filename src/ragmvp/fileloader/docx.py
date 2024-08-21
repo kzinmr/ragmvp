@@ -12,8 +12,8 @@ from pathlib import Path
 
 from fsspec import AbstractFileSystem
 
-from fileloader.base import BaseReader
-from fileloader.schema import Document
+from ragmvp.fileloader.base import BaseReader
+from ragmvp.fileloader.schema import Document
 
 logger = logging.getLogger(__name__)
 

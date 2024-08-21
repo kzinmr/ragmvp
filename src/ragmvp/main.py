@@ -17,10 +17,11 @@ from langchain_openai import AzureOpenAIEmbeddings
 from langchain_openai.chat_models import AzureChatOpenAI
 from tqdm import tqdm
 
-from config import get_settings
-from fileloader.utils import load_docs_from_jsonl
+from ragmvp.config import get_settings
+from ragmvp.fileloader.utils import load_docs_from_jsonl
 
 load_dotenv()
+
 
 def rag_chain_lcel(vectorstore: VectorStore, llm: BaseChatModel) -> Runnable:
     retriever = vectorstore.as_retriever(

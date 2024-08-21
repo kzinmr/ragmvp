@@ -12,8 +12,8 @@ from pptx import Presentation
 from pptx.shapes.graphfrm import GraphicFrame
 from pptx.table import Table
 
-from fileloader.base import BaseReader
-from fileloader.schema import Document
+from ragmvp.fileloader.base import BaseReader
+from ragmvp.fileloader.schema import Document
 
 
 def extract_table_text(table: Table) -> str:

@@ -18,12 +18,12 @@ from fsspec.implementations.local import LocalFileSystem
 from tqdm import tqdm
 from tqdm.asyncio import tqdm_asyncio
 
-from fileloader.base import BaseReader, ResourcesReaderMixin
-from fileloader.docx import DocxReader
-from fileloader.pdf import PyMuPDFReader
-from fileloader.schema import Document
-from fileloader.slide import PptxReader
-from fileloader.tabular import PandasExcelReader
+from ragmvp.fileloader.base import BaseReader, ResourcesReaderMixin
+from ragmvp.fileloader.docx import DocxReader
+from ragmvp.fileloader.pdf import PyMuPDFReader
+from ragmvp.fileloader.schema import Document
+from ragmvp.fileloader.slide import PptxReader
+from ragmvp.fileloader.tabular import PandasExcelReader
 
 PathLike = Path | PurePosixPath
 
@@ -524,7 +524,10 @@ class SimpleDirectoryReader(BaseReader, ResourcesReaderMixin, FileSystemReaderMi
                 self.file_extractor, file_suffix, default_file_reader_cls
             )
             documents = await self._aload_documents_with_reader(
-                input_file, reader, metadata, self.fs,
+                input_file,
+                reader,
+                metadata,
+                self.fs,
             )
         else:
             documents = self._load_without_reader(
@@ -570,7 +573,10 @@ class SimpleDirectoryReader(BaseReader, ResourcesReaderMixin, FileSystemReaderMi
 
     @staticmethod
     async def _aload_documents_with_reader(
-        input_file: Path, reader: BaseReader, metadata: dict | None, fs: fsspec.AbstractFileSystem | None,
+        input_file: Path,
+        reader: BaseReader,
+        metadata: dict | None,
+        fs: fsspec.AbstractFileSystem | None,
     ) -> list[Document]:
         # NOTE: catch all errors except for ImportError
         try:
@@ -588,7 +594,6 @@ class SimpleDirectoryReader(BaseReader, ResourcesReaderMixin, FileSystemReaderMi
             return []
 
         return docs
-
 
     @staticmethod
     def _load_without_reader(

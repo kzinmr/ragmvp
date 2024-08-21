@@ -9,7 +9,7 @@ from enum import Enum
 from typing import Any, Self
 
 from langchain_core.documents import Document as LCDocument
-from pydantic import BaseModel, ConfigDict, Extra, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 DEFAULT_TEXT_NODE_TMPL = "{metadata_str}\n\n{content}"
 DEFAULT_METADATA_TMPL = "{key}: {value}"
@@ -58,7 +58,7 @@ class BaseComponent(BaseModel):
     """Base component object to capture class names."""
 
     class_name: str = Field(default_factory=lambda: "base_component")
-    model_config = ConfigDict(extra=Extra.allow)
+    model_config = ConfigDict(extra="allow")
 
     @classmethod
     def __json_schema_extra__(
@@ -234,7 +234,6 @@ class Document(BaseModel):
 
     def get_text(self) -> str:
         return self.get_content(metadata_mode=MetadataMode.NONE)
-
 
     def __str__(self) -> str:
         source_text_truncated = truncate_text(

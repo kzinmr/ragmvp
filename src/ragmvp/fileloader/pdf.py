@@ -4,8 +4,8 @@ from pathlib import Path
 
 import fitz
 
-from fileloader.base import BaseReader
-from fileloader.schema import Document
+from ragmvp.fileloader.base import BaseReader
+from ragmvp.fileloader.schema import Document
 
 
 class PyMuPDFReader(BaseReader):
