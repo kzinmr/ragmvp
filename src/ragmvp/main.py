@@ -2,7 +2,7 @@ import argparse
 import shutil
 from collections.abc import Generator
 from pathlib import Path
-from typing import Annotated, TypedDict
+from typing import Annotated, TypedDict, TypeVar
 
 import lancedb
 from dotenv import load_dotenv
@@ -132,8 +132,9 @@ if __name__ == "__main__":
     table_name = get_settings().lancedb_table
     # NOTE: id はlancedb(langchain)の中でuuidがふられる
     # NOTE: document.page_content からの埋め込みしかできない
+    T = TypeVar("T")
 
-    def batch(iterable: list, n: int = 1) -> Generator[list, None, None]:
+    def batch(iterable: list[T], n: int = 1) -> Generator[list[T], None, None]:
         size = len(iterable)
         for ndx in range(0, size, n):
             yield iterable[ndx : min(ndx + n, size)]

@@ -1,6 +1,7 @@
 """Read PDF files using PyMuPDF library."""
 
 from pathlib import Path
+from typing import Any
 
 import fitz
 
@@ -14,7 +15,7 @@ class PyMuPDFReader(BaseReader):
     def load_data(
         self,
         file_path: Path | str,
-        extra_info: dict | None = None,
+        extra_info: dict[str, Any] | None = None,
     ) -> list[Document]:
         """Loads list of documents from PDF file and also accepts extra information in dict format.
         Args:
@@ -38,7 +39,7 @@ class PyMuPDFReader(BaseReader):
         return [
             Document(
                 text=page.get_text().encode("utf-8"),
-                extra_info=extra_info | {"page_number": page.number + 1},
+                metadata=extra_info | {"page_number": page.number + 1},
             )
             for page in doc
         ]

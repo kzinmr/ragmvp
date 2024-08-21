@@ -9,6 +9,7 @@ import re
 import xml.etree.ElementTree as ET
 import zipfile
 from pathlib import Path
+from typing import Any
 
 from fsspec import AbstractFileSystem
 
@@ -20,7 +21,7 @@ logger = logging.getLogger(__name__)
 RETRY_TIMES = 3
 
 
-def xml2text(xml: str) -> str:
+def xml2text(xml: bytes) -> str:
     """A string representing the textual content of this run, with content
     child elements like ``<w:tab/>`` translated to their Python
     equivalent.
@@ -101,7 +102,7 @@ class DocxReader(BaseReader):
     def load_data(
         self,
         file: Path,
-        extra_info: dict | None = None,
+        extra_info: dict[str, Any] | None = None,
         fs: AbstractFileSystem | None = None,
     ) -> list[Document]:
         """Parse file."""
@@ -111,7 +112,9 @@ class DocxReader(BaseReader):
         else:
             text = docx2txt_process(file)
 
-        if extra_info is not None:
+        if extra_info is None:
             extra_info = {"file_name": file.name}
+        else:
+            extra_info["file_name"] = file.name
 
         return [Document(text=text, metadata=extra_info)]

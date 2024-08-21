@@ -17,3 +17,10 @@ repos:
       language: system
       types: ["dockerfile"]
       entry: hadolint
+- repo: https://github.com/pre-commit/mirrors-mypy
+  rev: v1.11.1
+  hooks:
+    - id: mypy
+      files: ^(src/|tests/)
+      additional_dependencies:
+      - "pydantic>=2.8.2"

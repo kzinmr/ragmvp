@@ -6,6 +6,7 @@ Image captioning is not supported.
 """
 
 from pathlib import Path
+from typing import Any
 
 from fsspec import AbstractFileSystem
 from pptx import Presentation
@@ -34,7 +35,7 @@ class PptxReader(BaseReader):
     def load_data(
         self,
         file: Path,
-        extra_info: dict | None = None,
+        extra_info: dict[str, Any] | None = None,
         fs: AbstractFileSystem | None = None,
     ) -> list[Document]:
         """Parse .pptx file."""

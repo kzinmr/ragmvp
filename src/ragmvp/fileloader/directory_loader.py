@@ -10,7 +10,7 @@ from ragmvp.fileloader.utils import save_docs_to_jsonl
 def load_data_from_directory(data_dir: Path, limit: int) -> list[LCDocument]:
     num_files_limit = limit if limit > 0 else None
     documents = SimpleDirectoryReader(
-        data_dir,
+        str(data_dir),
         recursive=True,
         num_files_limit=num_files_limit,
         required_exts=[".pptx", ".ppt", ".pptm", ".pdf", ".xlsx", ".xls", ".docx"],
@@ -27,7 +27,7 @@ def chunk_documents(
         chunk_size=chunk_size,
         chunk_overlap=chunk_overlap,
     )
-    return text_splitter.split_documents(documents)
+    return text_splitter.split_documents(documents)  # type: ignore[no-any-return]
 
 
 def filter_short_documents(

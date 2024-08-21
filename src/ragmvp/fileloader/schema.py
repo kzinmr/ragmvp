@@ -1,12 +1,10 @@
 """Base schema for data structures."""
 
-import json
 import logging
-import pickle
 import textwrap
 import uuid
 from enum import Enum
-from typing import Any, Self
+from typing import Any
 
 from langchain_core.documents import Document as LCDocument
 from pydantic import BaseModel, ConfigDict, Field
@@ -54,73 +52,6 @@ def truncate_text(text: str, max_length: int) -> str:
     return text[: max_length - 3] + "..."
 
 
-class BaseComponent(BaseModel):
-    """Base component object to capture class names."""
-
-    class_name: str = Field(default_factory=lambda: "base_component")
-    model_config = ConfigDict(extra="allow")
-
-    @classmethod
-    def __json_schema_extra__(
-        cls, schema: dict[str, Any], model: "BaseComponent"
-    ) -> None:
-        """Add class name to schema."""
-        schema["properties"]["class_name"] = {
-            "title": "Class Name",
-            "type": "string",
-            "default": model.class_name,
-        }
-
-    def __getstate__(self) -> dict[str, Any]:
-        state = self.dict()
-
-        # remove attributes that are not pickleable -- kind of dangerous
-        keys_to_remove = []
-        for key, val in state.items():
-            try:
-                pickle.dumps(val)
-            except Exception:
-                keys_to_remove.append(key)
-
-        for key in keys_to_remove:
-            logging.warning("Removing unpickleable attribute {%s}", key)
-            del state[key]
-
-        return state
-
-    def __setstate__(self, state: dict[str, Any]) -> None:
-        # Use the __dict__ and __init__ method to set state
-        # so that all variables initialize
-        try:
-            self.__init__(**state)
-        except Exception:
-            # Fall back to the default __setstate__ method
-            # This may not work if the class had unpickleable attributes
-            object.__setstate__(self, "__dict__", state)
-
-    def to_dict(self, **kwargs: Any) -> dict[str, Any]:
-        data = self.dict(**kwargs)
-        data["class_name"] = self.class_name
-        return data
-
-    def to_json(self, **kwargs: Any) -> str:
-        data = self.to_dict(**kwargs)
-        return json.dumps(data)
-
-    @classmethod
-    def from_dict(cls, data: dict[str, Any], **kwargs: Any) -> Self:
-        if isinstance(kwargs, dict):
-            data.update(kwargs)
-
-        data.pop("class_name", None)
-        return cls(**data)
-
-    @classmethod
-    def from_json(cls, data_str: str, **kwargs: Any) -> Self:
-        data = json.loads(data_str)
-        return cls.from_dict(data, **kwargs)
-
-
 class MetadataMode(str, Enum):
     ALL = "all"
     EMBED = "embed"
@@ -131,27 +62,22 @@ class MetadataMode(str, Enum):
 class Document(BaseModel):
     """Generic interface for a data document.
 
-    This document connects to data sources.
+    metadata fields
+    - injected as part of the text shown to LLMs as context
+    - injected as part of the text for generating embeddings
+    - used by vector DBs for metadata filtering
 
     """
 
-    model_config = ConfigDict(populate_by_name=True)
+    model_config = ConfigDict()
 
     id_: str = Field(
         default_factory=lambda: str(uuid.uuid4()),
         description="Unique ID of the node.",
     )
-
-    """"
-    metadata fields
-    - injected as part of the text shown to LLMs as context
-    - injected as part of the text for generating embeddings
-    - used by vector DBs for metadata filtering
-    """
     metadata: dict[str, Any] = Field(
         default_factory=dict,
         description="A flat dictionary of metadata fields",
-        alias="extra_info",
     )
     excluded_embed_metadata_keys: list[str] = Field(
         default_factory=list,

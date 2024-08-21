@@ -4,7 +4,7 @@ Contains parsers for tabular data files.
 
 """
 
-import importlib
+import importlib.util
 from pathlib import Path
 from typing import Any
 
@@ -40,7 +40,7 @@ class PandasExcelReader(BaseReader):
         *args: Any,
         concat_rows: bool = True,
         sheet_name: str | None = None,
-        pandas_config: dict | None = None,
+        pandas_config: dict[str, Any] | None = None,
         **kwargs: Any,
     ) -> None:
         super().__init__(*args, **kwargs)
@@ -53,7 +53,7 @@ class PandasExcelReader(BaseReader):
     def load_data(
         self,
         file: Path,
-        extra_info: dict | None = None,
+        extra_info: dict[str, Any] | None = None,
         fs: AbstractFileSystem | None = None,
     ) -> list[Document]:
         """Parse .xlsx file."""

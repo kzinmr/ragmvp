@@ -66,7 +66,9 @@ class ResourcesReaderMixin(ABC):
         return self.list_resources(*args, **kwargs)
 
     @abstractmethod
-    def get_resource_info(self, resource_id: str, *args: Any, **kwargs: Any) -> dict:
+    def get_resource_info(
+        self, resource_id: str, *args: Any, **kwargs: Any
+    ) -> dict[str, Any]:
         """Get a dictionary of information about a specific resource.
 
         Args:
@@ -81,7 +83,7 @@ class ResourcesReaderMixin(ABC):
 
     async def aget_resource_info(
         self, resource_id: str, *args: Any, **kwargs: Any
-    ) -> dict:
+    ) -> dict[str, Any]:
         """Get a dictionary of information about a specific resource asynchronously.
 
         Args:
@@ -95,7 +97,9 @@ class ResourcesReaderMixin(ABC):
         """
         return self.get_resource_info(resource_id, *args, **kwargs)
 
-    def list_resources_with_info(self, *args: Any, **kwargs: Any) -> dict[str, dict]:
+    def list_resources_with_info(
+        self, *args: Any, **kwargs: Any
+    ) -> dict[str, dict[str, Any]]:
         """Get a dictionary of information about all resources.
 
         Returns:
@@ -109,7 +113,7 @@ class ResourcesReaderMixin(ABC):
 
     async def alist_resources_with_info(
         self, *args: Any, **kwargs: Any
-    ) -> dict[str, dict]:
+    ) -> dict[str, dict[str, Any]]:
         """Get a dictionary of information about all resources asynchronously.
 
         Returns:
