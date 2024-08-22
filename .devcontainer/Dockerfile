@@ -16,7 +16,7 @@ RUN chown -R $USERNAME /workspace && git config --system --add safe.directory /w
 USER $USERNAME
 
 # Create uv venv (package install & venv creation)
-RUN \
+RUN --mount=type=cache,target=/workspace/.cache/uv \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     --mount=type=bind,source=README.md,target=README.md \
     --mount=type=bind,source=src,target=src \

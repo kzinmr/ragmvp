@@ -6,8 +6,9 @@ import uuid
 from enum import Enum
 from typing import Any
 
-from langchain_core.documents import Document as LCDocument
 from pydantic import BaseModel, ConfigDict, Field
+
+from fileloader.langchain import LCDocument
 
 DEFAULT_TEXT_NODE_TMPL = "{metadata_str}\n\n{content}"
 DEFAULT_METADATA_TMPL = "{key}: {value}"
@@ -170,13 +171,13 @@ class Document(BaseModel):
         )
         return f"Doc ID: {self.id_}\n{source_text_wrapped}"
 
-    def to_langchain_format(self) -> "LCDocument":
+    def to_langchain_format(self) -> LCDocument:
         """Convert struct to LangChain document format."""
         metadata = self.metadata or {}
         return LCDocument(page_content=self.text, metadata=metadata)
 
     @classmethod
-    def from_langchain_format(cls, doc: "LCDocument") -> "Document":
+    def from_langchain_format(cls, doc: LCDocument) -> "Document":
         """Convert struct from LangChain document format."""
         return cls(text=doc.page_content, metadata=doc.metadata)
 

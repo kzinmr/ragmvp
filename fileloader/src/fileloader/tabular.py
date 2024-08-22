@@ -11,8 +11,8 @@ from typing import Any
 import pandas as pd
 from fsspec import AbstractFileSystem
 
-from ragmvp.fileloader.base import BaseReader
-from ragmvp.fileloader.schema import Document
+from fileloader.base import BaseReader
+from fileloader.schema import Document
 
 
 class PandasExcelReader(BaseReader):

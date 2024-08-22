@@ -1,10 +1,9 @@
+import argparse
 from pathlib import Path
 
-from langchain_core.documents import Document as LCDocument
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-
-from ragmvp.fileloader.file import SimpleDirectoryReader
-from ragmvp.fileloader.utils import save_docs_to_jsonl
+from fileloader.file import SimpleDirectoryReader
+from fileloader.langchain import LCDocument, RecursiveCharacterTextSplitter
+from fileloader.utils import save_docs_to_jsonl
 
 
 def load_data_from_directory(data_dir: Path, limit: int) -> list[LCDocument]:
@@ -27,7 +26,11 @@ def chunk_documents(
         chunk_size=chunk_size,
         chunk_overlap=chunk_overlap,
     )
-    return text_splitter.split_documents(documents)  # type: ignore[no-any-return]
+    lc_docs = text_splitter.split_documents(documents)  # type: ignore[no-any-return]
+    return [
+        LCDocument(page_content=doc.page_content, metadata=doc.metadata)
+        for doc in lc_docs
+    ]
 
 
 def filter_short_documents(
@@ -52,9 +55,21 @@ def load_main(
 
 
 if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser("Bulk index database from the JSONL data")
+    parser = argparse.ArgumentParser(
+        "Bulk conversion from document files to JSONL dataset."
+    )
+    parser.add_argument(
+        "--datadir",
+        "-i",
+        type=str,
+        help="Path to the directory containing the data files",
+    )
+    parser.add_argument(
+        "--outdir",
+        "-o",
+        type=str,
+        help="Path to the directory to save the JSONL dataset",
+    )
     parser.add_argument(
         "--limit",
         "-l",
@@ -72,10 +87,15 @@ if __name__ == "__main__":
 
     limit = args["limit"]
     chunksize = args["chunksize"]
+    data_dir = Path(args["datadir"])
+    out_dir = Path(args["outdir"])
 
-    # assume: ragmvp/src/fileloader and ragmvp/data
-    data_dir = Path(__file__).parents[2] / "data"
+    if not data_dir.exists():
+        data_dir.mkdir(parents=True)
+    if not out_dir.exists():
+        out_dir.mkdir(parents=True)
 
     documents = load_main(data_dir, chunk_size=chunksize, limit=limit)
 
-    save_docs_to_jsonl(documents, data_dir / "documents.jsonl")
+    out_path = data_dir / "documents.jsonl"
+    save_docs_to_jsonl(documents, out_path)

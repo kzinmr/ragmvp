@@ -5,9 +5,9 @@ from collections.abc import Iterable
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from langchain_core.documents import Document as LCDocument
+    from fileloader.langchain import LCDocument
 
-from ragmvp.fileloader.schema import Document
+from fileloader.schema import Document
 
 
 class BaseReader(ABC):
