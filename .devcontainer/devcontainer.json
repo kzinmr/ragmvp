@@ -1,52 +1,60 @@
 {
   "name": "uv",
   "build": {
-      "context": "..",
-      "dockerfile": "Dockerfile"
+    "context": "..",
+    "dockerfile": "Dockerfile"
   },
+  "workspaceMount": "source=${localWorkspaceFolder},target=${containerWorkspaceFolder},type=bind,consistency=cached",
+  "workspaceFolder": "/workspace",
+  "mounts": [
+    {"type":"volume","target":"/workspace/.venv"},
+    {"type":"volume","target":"/home/vscode/.cache/uv"}
+  ],
   "features": {
-      "ghcr.io/dhoeric/features/hadolint:1": {}
+    "ghcr.io/dhoeric/features/hadolint:1": {}
   },
-  "customizations": {
-      "vscode": {
-          "extensions": [
-              "charliermarsh.ruff",
-              "codezombiech.gitignore",
-              "eamodio.gitlens",
-              "exiasr.hadolint",
-              "kevinrose.vsc-python-indent",
-              "mosapride.zenkaku",
-              "ms-azuretools.vscode-docker",
-              "ms-python.python",
-              "njpwerner.autodocstring",
-              "oderwat.indent-rainbow",
-              "pkief.material-icon-theme",
-              "shardulm94.trailing-spaces",
-              "usernamehw.errorlens",
-              "yzhang.markdown-all-in-one"
-          ],
-          "settings": {
-              "python.defaultInterpreterPath": "/app/.venv/bin/python",
-              "[python]": {
-                  "editor.defaultFormatter": "charliermarsh.ruff",
-                  "editor.codeActionsOnSave": {
-                      "source.fixAll.ruff": "explicit",
-                      "source.organizeImports.ruff": "explicit"
-                  },
-                  "editor.formatOnSave": true
-              },
-              "files.insertFinalNewline": true,
-              "files.trimTrailingWhitespace": true,
-              "terminal.integrated.defaultProfile.linux": "zsh",
-              "terminal.integrated.profiles.linux": {
-                  "zsh": {
-                      "path": "/bin/zsh"
-                  }
-              }
-          }
-      }
-  },
-  "postCreateCommand": "uv sync",
+  "postCreateCommand": [
+    "/bin/sh",
+    "-c",
+    "echo alias s=\\'git status\\' >> /home/vscode/.zshrc && echo alias gres=\\'git restore\\' >> /home/vscode/.zshrc && echo alias gdiff=\\'git diff\\' >> /home/vscode/.zshrc && echo alias gswc=\\'git switch\\' >> /home/vscode/.zshrc"
+  ],
   "postStartCommand": "uvx pre-commit install",
-  "remoteUser": "vscode"
+  "remoteUser": "vscode",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-azuretools.vscode-docker",
+        "charliermarsh.ruff",
+        "exiasr.hadolint",
+        "eamodio.gitlens",
+        "usernamehw.errorlens",
+        "shardulm94.trailing-spaces",
+        "njpwerner.autodocstring",
+        "kevinrose.vsc-python-indent",
+        "oderwat.indent-rainbow",
+        "yzhang.markdown-all-in-one",
+        "tuttieee.emacs-mcx"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/workspace/.venv/bin/python",
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.codeActionsOnSave": {
+            "source.fixAll.ruff": "explicit",
+            "source.organizeImports.ruff": "explicit"
+          },
+          "editor.formatOnSave": true
+        },
+        "files.insertFinalNewline": true,
+        "files.trimTrailingWhitespace": true,
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "zsh": {
+            "path": "/bin/zsh"
+          }
+        }
+      }
+    }
+  }
 }
