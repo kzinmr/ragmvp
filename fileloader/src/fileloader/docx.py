@@ -13,8 +13,8 @@ from typing import Any
 
 from fsspec import AbstractFileSystem
 
-from ragmvp.fileloader.base import BaseReader
-from ragmvp.fileloader.schema import Document
+from fileloader.base import BaseReader
+from fileloader.schema import Document
 
 logger = logging.getLogger(__name__)
 

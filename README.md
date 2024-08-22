@@ -2,11 +2,9 @@
 
 - [LanceDB](https://github.com/lancedb/lancedb)
 
-## Load files
 
-```python
-python src/fileloader/directory_loader.py
-```
+
+# `api`
 
 ## Run RAG
 

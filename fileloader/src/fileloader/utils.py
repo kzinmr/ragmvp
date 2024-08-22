@@ -2,13 +2,14 @@ import json
 from collections.abc import Iterable
 from pathlib import Path
 
-from langchain_core.documents import Document as LCDocument
+from fileloader.langchain import LCDocument
 
 
 def save_docs_to_jsonl(array: Iterable[LCDocument], file_path: Path) -> None:
     with file_path.open("w", encoding="utf8") as jsonl_file:
         for doc in array:
-            jsonl_file.write(doc.json(ensure_ascii=False) + "\n")
+            data = doc.model_dump_json()
+            jsonl_file.write(json.dumps(json.loads(data), ensure_ascii=False) + "\n")
 
 
 def load_docs_from_jsonl(file_path: Path) -> list[LCDocument]:

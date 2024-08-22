@@ -8,7 +8,7 @@
   "workspaceFolder": "/workspace",
   "mounts": [
     {"type":"volume","target":"/workspace/.venv"},
-    {"type":"volume","target":"/home/vscode/.cache/uv"}
+    {"type":"volume","target":"/workspace/.cache/uv"}
   ],
   "features": {
     "ghcr.io/dhoeric/features/hadolint:1": {}

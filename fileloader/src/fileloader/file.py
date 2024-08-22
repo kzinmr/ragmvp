@@ -18,12 +18,12 @@ from fsspec.implementations.local import LocalFileSystem
 from tqdm import tqdm
 from tqdm.asyncio import tqdm_asyncio
 
-from ragmvp.fileloader.base import BaseReader, ResourcesReaderMixin
-from ragmvp.fileloader.docx import DocxReader
-from ragmvp.fileloader.pdf import PyMuPDFReader
-from ragmvp.fileloader.schema import Document
-from ragmvp.fileloader.slide import PptxReader
-from ragmvp.fileloader.tabular import PandasExcelReader
+from fileloader.base import BaseReader, ResourcesReaderMixin
+from fileloader.docx import DocxReader
+from fileloader.pdf import PyMuPDFReader
+from fileloader.schema import Document
+from fileloader.slide import PptxReader
+from fileloader.tabular import PandasExcelReader
 
 PathLike = Path | PurePosixPath
 
